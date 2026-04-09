@@ -1,0 +1,240 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* LCD */
+  --c-lcd-bg: #b8c9a3;
+  --c-lcd-sprite: #1a1a1a;
+  --c-lcd-ghost: rgba(26, 26, 26, 0.12);
+  --c-lcd-segment-off: rgba(26, 26, 26, 0.05);
+
+  /* Frame */
+  --c-frame-body: #e8e0d0;
+  --c-frame-bezel: #c47a7a;
+  --c-frame-label: #2a2a2a;
+  --c-frame-btn-a: #3a3a5c;
+  --c-frame-btn-b: #5c3a3a;
+
+  /* Shell */
+  --c-page-bg: #1a1a1a;
+  --c-page-text: #b8c9a3;
+
+  /* Spacing */
+  --frame-pad: clamp(12px, 3vw, 32px);
+  --frame-radius: 16px;
+  --screen-radius: 8px;
+  --btn-size: clamp(28px, 5vw, 44px);
+
+  /* Font */
+  --font-label: 'Helvetica Neue', 'Arial', sans-serif;
+
+  /* Transitions */
+  --t-ghost: 100ms linear;
+  --t-fade: 300ms ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--c-page-bg);
+  color: var(--c-page-text);
+  font-family: system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Prevent mobile tap highlight and double-tap zoom on game canvas */
+canvas {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none;
+  user-select: none;
+}
+
+/* Focus rings — never remove, only style */
+:focus-visible {
+  outline: 2px solid var(--c-page-text);
+  outline-offset: 2px;
+}
+
+/* Page layout */
+.page-layout {
+  min-height: 100dvh;
+  background: var(--c-page-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.device-container {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Device frame */
+.device-outer {
+  background: var(--c-frame-body);
+  border-radius: var(--frame-radius);
+  padding: var(--frame-pad);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.07),
+    0 10px 15px rgba(0, 0, 0, 0.1),
+    0 20px 25px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  width: 100%;
+}
+
+.screen-bezel {
+  background: var(--c-frame-bezel);
+  border-radius: var(--screen-radius);
+  padding: 8px;
+}
+
+.screen-inner {
+  background: var(--c-lcd-bg);
+  border-radius: calc(var(--screen-radius) - 4px);
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  position: relative;
+}
+
+.label-top,
+.label-bottom {
+  font-family: var(--font-label);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--c-frame-label);
+  text-align: center;
+  font-size: clamp(10px, 1.8vw, 16px);
+  padding: 6px 0;
+}
+
+.controls-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+}
+
+.mode-btn {
+  width: var(--btn-size);
+  height: var(--btn-size);
+  border-radius: 50%;
+  font-size: clamp(8px, 1.2vw, 11px);
+  font-weight: 700;
+  font-family: var(--font-label);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 2px solid var(--c-frame-label);
+  cursor: pointer;
+  transition:
+    opacity 150ms ease,
+    transform 100ms ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mode-btn:active {
+  transform: scale(0.95);
+}
+
+.mode-btn[aria-pressed='true'] {
+  border-color: transparent;
+  color: #ffffff;
+}
+
+.mode-btn[aria-pressed='false'] {
+  background: var(--c-frame-body);
+  color: var(--c-frame-label);
+}
+
+.mode-btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.mode-btn-a[aria-pressed='true'] {
+  background: var(--c-frame-btn-a);
+}
+
+.mode-btn-b[aria-pressed='true'] {
+  background: var(--c-frame-btn-b);
+}
+
+.mute-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--c-frame-label);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.error-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: var(--c-lcd-bg);
+  color: var(--c-lcd-sprite);
+  font-size: 12px;
+  text-align: center;
+  padding: 16px;
+}
+
+/* Responsive */
+@media (max-width: 479px) {
+  .device-container {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .device-container {
+    max-height: 95dvh;
+  }
+  .screen-inner {
+    max-height: calc(95dvh - 120px);
+  }
+  .label-top,
+  .label-bottom {
+    font-size: 9px;
+    padding: 2px 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .device-container {
+    max-width: 520px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .device-container {
+    max-width: 600px;
+  }
+}
+
+/* Reduced motion — disable ghost effect and blink animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
