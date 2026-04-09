@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/*",
+    "timings": [
+      { "metric": "first-contentful-paint", "budget": 1500 },
+      { "metric": "interactive", "budget": 2500 },
+      { "metric": "speed-index", "budget": 1500 }
+    ],
+    "resourceSizes": [
+      { "resourceType": "script", "budget": 150 },
+      { "resourceType": "total", "budget": 200 }
+    ],
+    "scores": [
+      { "category": "performance", "minScore": 90 },
+      { "category": "accessibility", "minScore": 85 },
+      { "category": "best-practices", "minScore": 90 },
+      { "category": "seo", "minScore": 80 }
+    ]
+  }
+]
